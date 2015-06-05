@@ -178,9 +178,7 @@
       */
 
 
-  _.reduce = function(collection, iterator, accumulator) {
-    var arr = collection.slice(0);
-
+  _.reduce = function(arr, iterator, accumulator) {
     if (accumulator === undefined){
       accumulator = arr.shift();
     }
