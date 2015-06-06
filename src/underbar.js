@@ -206,12 +206,28 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return _.reduce(collection, function(result, val){
+      if (!result) {
+        return false;
+      } else {
+        return iterator(val) ? true : false;
+      }
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    iterator = iterator || _.identity;
+    return _.reduce(collection, function(result, val){
+      if (result) {
+        return true;
+      } else {
+        return !iterator(val) ? false : true;
+      }
+    }, false);
   };
 
 
@@ -234,11 +250,35 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    obj = _.reduce(args, function(mainObject, nextObject){
+      _.each(nextObject, function(val, key){
+        mainObject[key] = val;
+      });
+      return mainObject;
+    }, obj);
+
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    obj = _.reduce(args, function(mainObject, nextObject){
+      _.each(nextObject, function(val, key){
+        if ( !(key in mainObject) ) {
+          mainObject[key] = val;
+        }
+      });
+      return mainObject;
+    }, obj);
+
+    return obj;
   };
 
 
@@ -264,7 +304,7 @@
     return function() {
       if (!alreadyCalled) {
         // TIP: .apply(this, arguments) is the standard way to pass on all of the
-        // infromation from one function call to another.
+        // information from one function call to another.
         result = func.apply(this, arguments);
         alreadyCalled = true;
       }
@@ -282,6 +322,15 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var pastCalls = {};
+
+    return function(arg){
+      if ( !(arg in pastCalls) ) {
+        pastCalls[arg] = func.apply(this, arguments);
+      }
+      return pastCalls[arg];
+    };
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -291,6 +340,10 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = arguments;
+    setTimeout(function(){
+      return func.apply(this, Array.prototype.slice.call(args, 2));
+    }, wait);
   };
 
 
@@ -305,6 +358,33 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var arr = array.slice();
+    var result = [];
+
+    // this looks perfect for a recursive function
+    while (arr.length > 0) {
+      var ran = Math.floor(Math.random() * arr.length);
+      var temp = arr.splice(ran, 1);
+      result.push(temp[0]);
+    }
+    return result;
+
+    /* recursive helper attempt
+
+    function recur(arr) {
+      if (arr.length == 1) {
+        result.push(arr[0]);
+        return arr;
+      } else {
+        var ran = Math.floor(Math.random() * arr.length);
+        var temp = arr.splice(ran, 1);
+        result.push(temp[0]);
+        return recur(arr);
+      }
+    }
+    return recur(arr);
+    */
+
   };
 
 
