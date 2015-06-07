@@ -221,13 +221,9 @@
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
     iterator = iterator || _.identity;
-    return _.reduce(collection, function(result, val){
-      if (result) {
-        return true;
-      } else {
-        return !iterator(val) ? false : true;
-      }
-    }, false);
+    return !( _.every(collection, function(val){
+        return !iterator(val);    
+      }) );
   };
 
 
