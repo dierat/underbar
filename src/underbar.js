@@ -364,23 +364,6 @@
       result.push(temp[0]);
     }
     return result;
-
-    /* recursive helper attempt
-
-    function recur(arr) {
-      if (arr.length == 1) {
-        result.push(arr[0]);
-        return arr;
-      } else {
-        var ran = Math.floor(Math.random() * arr.length);
-        var temp = arr.splice(ran, 1);
-        result.push(temp[0]);
-        return recur(arr);
-      }
-    }
-    return recur(arr);
-    */
-
   };
 
 
