@@ -378,6 +378,12 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+    console.log("running invoke");
+    _.map(collection, function(val){
+      // console.log("inside each");
+      // console.log("each loop return: ", functionOrKey.apply(this, val));
+      return functionOrKey.apply(this, val);
+    });
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -393,6 +399,22 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    var args = Array.prototype.slice.call(arguments, 0);
+    var longestArrayLen = _.reduce(args, function(len, arr){
+      return arr.length > len ? arr.length : len;
+    }, 0);
+
+    // instead of using for loop, can use new Array(longestArrayLength) to create an array full of undefined values, then use map to transform that into the array that we want
+    var zipped = [];
+    for (var i=0; i<longestArrayLen; i++){
+      var temp = [];
+      for (var j=0; j<args.length; j++){
+        var val = args[j][i] || undefined;
+        temp.push(val);
+      }
+      zipped.push(temp);
+    }
+    return zipped;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
@@ -400,11 +422,14 @@
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    // recursively loop through the arrays 
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    var args = Array.prototype.slice.apply(arguments, 0);
+    // loop through each value in the first array, then loop through the other arrays use indexOf to check if that value is present
   };
 
   // Take the difference between one array and a number of other arrays.
