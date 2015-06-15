@@ -378,11 +378,12 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
-    console.log("running invoke");
-    _.map(collection, function(val){
-      // console.log("inside each");
-      // console.log("each loop return: ", functionOrKey.apply(this, val));
-      return functionOrKey.apply(this, val);
+    return _.map(collection, function(val){
+      if (typeof functionOrKey === 'string'){
+        return val[functionOrKey]();
+      } else {
+        return functionOrKey.apply(val, null);
+      }
     });
   };
 
