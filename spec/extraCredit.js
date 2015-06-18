@@ -99,6 +99,16 @@
 
         expect(_.intersection(stooges, leaders)).to.eql(['moe']);
       });
+
+      it('should work on three arrays', function(){
+        var famousCompanies = ['Google', 'Apple', 'Facebook', 'Yahoo', 'Shell', 'McDonalds', 'Burger King', 'Coca-Cola', 'Toyota', 'Honda', 'Ford'];
+        var techCompanies = ['Google', 'Apple', 'Facebook', 'Yahoo', 'Q 42', 'Looker', 'MDG'];
+        var bayAreaCompanies = ['Google', 'Apple', 'Facebook', 'Yahoo', 'Looker', 'MDG'];
+
+        var functionCall = _.intersection(famousCompanies, techCompanies, bayAreaCompanies);
+
+        expect(functionCall).to.eql(['Google', 'Apple', 'Facebook', 'Yahoo']);
+      });
     });
 
     describe('difference', function() {

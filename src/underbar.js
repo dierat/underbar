@@ -460,8 +460,13 @@
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
-    var args = Array.prototype.slice.apply(arguments, 0);
-    // loop through each value in the first array, then loop through the other arrays use indexOf to check if that value is present
+    var firstArray = arguments[0];
+    var args = Array.prototype.slice.call(arguments, 1);
+    return _.filter(firstArray, function(val){
+      return _.reduce(args, function(bool, arr){
+        return _.indexOf(arr, val) === -1 ? false : true;
+      }, true);
+    });
   };
 
   // Take the difference between one array and a number of other arrays.
