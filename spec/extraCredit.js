@@ -73,6 +73,12 @@
     });
 
     describe('flatten', function() {
+      it('works on shallow arrays', function(){
+        var shallowArray = [[1],[2],[3],[4]];
+
+        expect(_.flatten(shallowArray)).to.eql([1,2,3,4]);
+      });
+
       it('can flatten nested arrays', function() {
         var nestedArray = [1, [2], [3, [[[4]]]]];
 
