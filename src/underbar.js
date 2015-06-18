@@ -464,14 +464,23 @@
     var args = Array.prototype.slice.call(arguments, 1);
     return _.filter(firstArray, function(val){
       return _.reduce(args, function(bool, arr){
-        return _.indexOf(arr, val) === -1 ? false : true;
+        if (bool === false){return false;}
+        else {return _.indexOf(arr, val) === -1 ? false : true;}
       }, true);
     });
   };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
-  _.difference = function(array) {
+  _.difference = function(firstArray) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    return _.filter(firstArray, function(val){
+      return _.reduce(args, function(bool, arr){
+        if (bool === false){return false;}
+        else {return _.indexOf(arr, val) !== -1 ? false : true;}
+      }, true);
+    });
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
