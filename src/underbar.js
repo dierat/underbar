@@ -454,8 +454,13 @@
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(arr) {
-    // recursively loop through the arrays then use reduce + concat to flatten them
     return _.reduce(arr, function(flat, nextArray){
+      for (var i=0; i<nextArray.length; i++){
+        if (Array.isArray(nextArray[i])){
+          nextArray = _.flatten(nextArray);
+          break;
+        }
+      }
       return flat.concat(nextArray);
     }, []);
   };
