@@ -240,14 +240,12 @@
 
     var args = Array.prototype.slice.call(arguments, 1);
 
-    obj = _.reduce(args, function(mainObject, nextObject){
+    return _.reduce(args, function(mainObject, nextObject){
       _.each(nextObject, function(val, key){
         mainObject[key] = val;
       });
       return mainObject;
     }, obj);
-
-    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
