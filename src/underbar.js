@@ -456,8 +456,7 @@
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
-  _.intersection = function() {
-    var firstArray = arguments[0];
+  _.intersection = function(firstArray) {
     var args = Array.prototype.slice.call(arguments, 1);
     return _.filter(firstArray, function(val){
       return _.reduce(args, function(bool, arr){
@@ -485,27 +484,14 @@
   // on this function.
   //
   // Note: This is difficult! It may take a while to implement.
-
-  _.memoize = function(func) {
-    var pastCalls = {};
-
-    return function(arg){
-      if ( !(arg in pastCalls) ) {
-        pastCalls[arg] = func.apply(this, arguments);
-      }
-      return pastCalls[arg];
-    };
-
-  };
-
   _.throttle = function(func, wait) {
     var prevCall;
 
     return function(){
       var now = new Date();
-      if ( (prevCall - now) < wait ){
+      var timeDif = now - prevCall;
+      if (timeDif > wait || !prevCall){
         prevCall = now;
-        console.log("prevCall = ", prevCall);
         func.apply(this, arguments);
       }
     }
