@@ -38,17 +38,8 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    var len = array.length;
-
-    if (n === undefined) {
-      return array[len - 1];
-    } else if (n === 0) {
-      return [];
-    } else if (len < n) {
-      return array;
-    } else {
-      return array.slice(n - 1, len);
-    }
+    var slice = _.first(array.reverse(), n);
+    return slice.length > 1 ? slice.reverse() : slice;
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -496,6 +487,31 @@
   // on this function.
   //
   // Note: This is difficult! It may take a while to implement.
-  _.throttle = function(func, wait) {
+
+  _.memoize = function(func) {
+    var pastCalls = {};
+
+    return function(arg){
+      if ( !(arg in pastCalls) ) {
+        pastCalls[arg] = func.apply(this, arguments);
+      }
+      return pastCalls[arg];
+    };
+
   };
+
+  _.throttle = function(func, wait) {
+    var prevCall;
+
+    return function(){
+      var now = new Date();
+      if ( (prevCall - now) < wait ){
+        prevCall = now;
+        console.log("prevCall = ", prevCall);
+        func.apply(this, arguments);
+      }
+    }
+
+  };
+
 }());
